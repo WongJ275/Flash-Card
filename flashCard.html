@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>flash card</title>
+        <link rel="stylesheet" href="flashCard.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    </head>
+    <body>
+
+        <!--Title (with back to menu button)-->
+        <div class="titleContainer">
+            <h1 class="title">Flash Card</h1>
+            <div class="menuBtnContainer hide"><i class="fa-solid fa-house menuBtn"></i></div> 
+        </div>
+        
+        <!--Input for adding profiles-->
+        <div class="wrapper">
+            <input type="text" id="addProfile" class="addProfileInput" placeholder="Enter Profile Name" />
+            <button id="addProfileBtn" class="addProfileBtn">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>  
+        </div>
+
+        <!--Sorting and Editing for profiles-->
+        <div class="profileOptionContainer">
+            <select id="profileSort" class="profileSort">
+                <option value="timeAddedAsc">Time Added Asc</option>
+                <option value="timeAddedDesc">Time Added Desc</option>
+                <option value="nameAsc">Name Asc</option>
+                <option value="nameDesc">Name Desc</option>
+                <option value="lastAccessedAsc">Last Accessed Asc</option>
+                <option value="lastAccessedDesc">Last Accessed Desc</option>
+            </select>
+
+            <i class="fa-solid fa-pen-to-square profileEditBtn"></i>
+        </div>
+
+        <!--Managing profiles-->
+        <div class="editProfileContainer">
+            <div class="editProfile">
+                
+            </div>
+            <div class="closeEditProfile"></div>
+        </div>
+        
+        <!--Show all profiles-->
+        <div class="menu"></div>
+
+        <!--Show all cards of selected profile-->
+        <div class="showCard hide">
+            <div class="addCard">
+                <h2 class="showCardTitle"></h2>
+                <div class="addCardContainer">
+                    <textarea id="question" class="question" placeholder="Enter Question"></textarea>
+                    <textarea id="answer" class="answer" placeholder="Enter Answer"></textarea>
+                </div>
+                <button id="addCard" class="addCardBtn">Add Card</button>
+            </div>
+            <i class="fa-regular fa-circle-play playBtn"></i>
+            <div class="cardContainer"></div>
+        </div>
+
+        <!--Read cards of selected profile-->
+        <div class="readCard hide">
+            <div class="readCardContainer">
+                
+                <div class="front">
+                    <h2>Question</h2>
+                    <div class="content questionCardContainer">
+
+                    </div>
+                </div>
+                <div class="back hide">
+                    <h2>Answer</h2>
+                    <div class="content answerCardContainer">
+
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button id="prev" class="prevBtn btn">Previous</button>
+                    <button id="editCard" class="editBtn btn">Edit</button>
+                    <button id="next" class="nextBtn btn">Next</button>
+                    <span></span>
+                    <div class="indexContainer">
+                        <span class="index">1</span>
+                        <span>/</span>
+                        <span class="total">1</span>
+                    </div>
+                </div>
+                
+                <!--Timer-->
+                <div class="timerContainer">
+                    <i class="fa-solid fa-window-minimize"></i>
+                    <span class="timerTitle">Work</span>
+                    <div class="timer">
+                        <span class="timerMin">25</span>
+                        <span class="timerColon">:</span>
+                        <span class="timerSec">00</span>
+                    </div>
+                    <div class="timerBtnContainer">
+                        <div class="timerPlayBtn">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <i class="fa-solid fa-shuffle timerSwitchBtn"></i>
+                    </div>
+                </div>
+
+                <div class="timerMinimized hide">
+                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                </div>
+            </div>
+        </div>
+
+        <!--Back to top button-->
+        <a href="#" class="scrollToTop">
+            <i class="fa-solid fa-arrow-up"></i>
+        </a>
+
+        <script src="flashCard.js"></script>
+    </body>
+</html>
