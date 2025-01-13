@@ -64,7 +64,7 @@ body {
     display: grid;
     width: 900px;
     grid-template-columns: repeat(3, 1fr);
-    margin: 0 auto 50px auto;
+    margin: 0 auto 120px auto;
     gap: 35px;
     padding: 0 30px;
 }
@@ -230,6 +230,7 @@ body {
     font-weight: 500;
     width: 90%;
     transition: 0.2s ease-out;
+    overflow: hidden;
 }
 
 .profile:hover {

@@ -1,8 +1,3 @@
-window.addEventListener('load', function() {
-    
-});
-
-
 
 const cardFront = document.querySelector('.front');
 const cardBack = document.querySelector('.back');
@@ -23,7 +18,6 @@ const menu = document.querySelector('.menu');
 const addProfileBtn = document.querySelector('.addProfileBtn');
 const addProfileInput = document.querySelector('.addProfileInput');
 const addProfileBar = document.querySelector('.wrapper');
-const profiles = JSON.parse(localStorage.getItem('profiles')) || [];
 const profileOptionContainer = document.querySelector('.profileOptionContainer');
 
 const readCard = document.querySelector('.readCard');
@@ -32,13 +26,34 @@ const showCardTitle = document.querySelector('.showCardTitle');
 const menuBtnContainer = document.querySelector('.menuBtnContainer');
 
 let flashcards = [];
-let i = 0;  // current index
+let cardIndex = 0;  // current index
 let profileObjs = JSON.parse(localStorage.getItem('profileObj')) || [];
+let profiles = JSON.parse(localStorage.getItem('profiles')) || [];
 
 
-profiles.forEach((profile) => {
-    AddProfile(profile);
+menu.addEventListener('click', function(e) {
+    // Open profile
+    if (e.target.classList.contains('profile')) {
+        addProfileBar.style.display = 'none';
+        profileOptionContainer.style.display = 'none';
+        menu.style.display = 'none';
+        showCard.style.display = 'block';
+        menuBtnContainer.style.display = 'block';
+        showCardTitle.textContent = e.target.textContent;
+        const key = e.target.textContent + '-flashcards';
+        flashcards = JSON.parse(localStorage.getItem(key)) || [];
+        RenderCards();
+
+        const findProfile = profileObjs.find((profileObj) => profileObj.name === e.target.textContent);
+        findProfile ? findProfile.lastAccessed = Date.now() : null;
+        localStorage.setItem('profileObj', JSON.stringify(profileObjs));
+    }
+    // Delete profile from menu
+    else if (e.target.classList.contains('deleteProfileBtn')) {
+        confirm('Are you sure you want to delete this profile?') ? DeleteProfile(e.target) : null;
+    }
 });
+
 
 addProfileBtn.addEventListener('click', function() {
     const profileName = addProfileInput.value;
@@ -67,76 +82,44 @@ addProfileBtn.addEventListener('click', function() {
     profileObjs.push(profileObj);
     localStorage.setItem('profileObj', JSON.stringify(profileObjs));
 
-    AddProfile(profileName);
-
     SortProfiles();
 });
 
-function AddProfile(profileName) {
 
+function AddProfile(profileName) {
     menu.innerHTML += `<div class="profileContainer">
             <button class="profile" id="${profileName}">${profileName}</button>
             <i class="fa-regular fa-square-minus deleteProfileBtn"></i>
         </div>`;
-
-    
-    
-    const profileBtns = document.querySelectorAll('.profile');
-    profileBtns.forEach((btn) => {
-        btn.addEventListener('click', function() {
-            addProfileBar.style.display = 'none';
-            profileOptionContainer.style.display = 'none';
-            menu.style.display = 'none';
-            showCard.style.display = 'block';
-            menuBtnContainer.style.display = 'block';
-            showCardTitle.textContent = btn.textContent;
-            const key = btn.textContent + '-flashcards';
-            flashcards = JSON.parse(localStorage.getItem(key)) || [];
-            RenderCards();
-
-            const findProfile = profileObjs.find((profileObj) => profileObj.name === btn.textContent);
-            findProfile ? findProfile.lastAccessed = Date.now() : null;
-            localStorage.setItem('profileObj', JSON.stringify(profileObjs));
-        });
-    });
-
-    const deleteProfileBtns = document.querySelectorAll('.deleteProfileBtn');
-    deleteProfileBtns.forEach((btn) => {
-        btn.addEventListener('click', function() {
-            confirm('Are you sure you want to delete this profile?') ? DeleteProfile(btn) : null;
-        });
-    });
 }
 
-function DeleteProfile(btn) {
 
+function DeleteProfile(btn) {
     const btnTextContent = btn.previousElementSibling.textContent;
     const deleteKey = btnTextContent + '-flashcards';
     localStorage.removeItem(deleteKey);
-
     
     const findProfile = profileObjs.find((obj) => obj.name === btnTextContent);
-
     findProfile ? profileObjs.splice(profileObjs.indexOf(findProfile), 1) : null;
     localStorage.setItem('profileObj', JSON.stringify(profileObjs));
     
     const nameToDelete = btnTextContent;
     profiles.splice(profiles.indexOf(nameToDelete), 1);
     localStorage.setItem('profiles', JSON.stringify(profiles));
-    menu.innerHTML = '';
-    profiles.forEach((profile) => {
-        AddProfile(profile);
-    });
-
     
+    menu.removeChild(btn.parentElement);
 }
 
+
+
+/* Flashcards */
 
 const addCardBtn = document.querySelector('.addCardBtn');
 const addCardQuestion = document.querySelector('.question');
 const addCardAnswer = document.querySelector('.answer');
 
 const cardContainer = document.querySelector('.cardContainer');
+
 
 function RenderCards() {
     cardContainer.innerHTML = '';
@@ -150,17 +133,20 @@ function RenderCards() {
             </div>
         `;
     });
-
-    const deleteBtns = document.querySelectorAll('.deleteBtn');
-    deleteBtns.forEach((btn, index) => {
-        btn.addEventListener('click', function() {
-            flashcards.splice(index, 1);
-            const key = showCardTitle.textContent + '-flashcards';
-            localStorage.setItem(key, JSON.stringify(flashcards));
-            RenderCards();
-        });
-    });
 }
+
+
+cardContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('deleteBtn')) {
+        const index = Array.from(e.target.parentElement.parentElement.children).indexOf(e.target.parentElement);
+        flashcards.splice(index, 1);
+        const key = showCardTitle.textContent + '-flashcards';
+        localStorage.setItem(key, JSON.stringify(flashcards));
+        
+        cardContainer.removeChild(e.target.parentElement);
+    }
+});
+ 
 
 addCardBtn.addEventListener('click', function() {
     const question = FormatTextSave(addCardQuestion.value);
@@ -176,9 +162,20 @@ addCardBtn.addEventListener('click', function() {
     flashcards.push({question, answer});
     const key = showCardTitle.textContent + '-flashcards';
     localStorage.setItem(key, JSON.stringify(flashcards));
-    RenderCards();
+    
+    cardContainer.innerHTML += `
+        <div class="card">
+            <div class="questionCard"><p>${FormatTextRender(question)}</p></div>
+            <hr/>
+            <div class="answerCard"><p>${FormatTextRender(answer)}</p></div>
+            <i class="fa-regular fa-square-minus deleteBtn"></i>
+        </div>
+    `;
 });
 
+
+
+/* Back to Menu */
 
 const menuBtn = document.querySelector('.menuBtn');
 
@@ -190,9 +187,15 @@ menuBtn.addEventListener('click', function() {
     menuBtnContainer.style.display = 'none';
     readCard.style.display = 'none';
 
-    SortProfiles();
+    const loadSortOption = localStorage.getItem('sortOption');
+    if (loadSortOption === 'lastAccessedAsc' || loadSortOption === 'lastAccessedDesc') {
+        SortProfiles();
+    }
 });
 
+
+
+/* Read Flashcards */
 
 const playBtn = document.querySelector('.playBtn');
 const questionCard = document.querySelector('.questionCardContainer');
@@ -209,12 +212,12 @@ playBtn.addEventListener('click', function() {
         return;
     }
 
-    i = 0;
+    cardIndex = 0;
     readCard.style.display = 'block';
     showCard.style.display = 'none';
 
-    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[i].question)}</p>`;
-    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[i].answer)}</p>`;
+    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
+    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
 
     cardFront.style.display = 'block';
     cardBack.style.display = 'none';
@@ -224,21 +227,21 @@ playBtn.addEventListener('click', function() {
 });
 
 nextBtn.addEventListener('click', function() {
-    i = (i + 1) % flashcards.length;
-    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[i].question)}</p>`;
-    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[i].answer)}</p>`;
+    cardIndex = (cardIndex + 1) % flashcards.length;
+    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
+    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
     cardFront.style.display = 'block';
     cardBack.style.display = 'none';
-    readCardIndex.textContent = i + 1;
+    readCardIndex.textContent = cardIndex + 1;
 });
 
 prevBtn.addEventListener('click', function() {
-    i = (i - 1 + flashcards.length) % flashcards.length;
-    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[i].question)}</p>`;
-    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[i].answer)}</p>`;
+    cardIndex = (cardIndex - 1 + flashcards.length) % flashcards.length;
+    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
+    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
     cardFront.style.display = 'block';
     cardBack.style.display = 'none';
-    readCardIndex.textContent = i + 1;
+    readCardIndex.textContent = cardIndex + 1;
 });
 
 editBtn.addEventListener('click', function() {
@@ -255,6 +258,8 @@ function FormatTextRender(text) {
 }
 
 
+
+/* Timer */
 
 const minutes = document.querySelector('.timerMin');
 const seconds = document.querySelector('.timerSec');
@@ -335,6 +340,9 @@ function SwitchToWork() {
 }
 
 
+
+/* Timer Minimized */
+
 const timerMinimizeBtn = document.querySelector('.fa-window-minimize');
 const timerMinimized = document.querySelector('.timerMinimized');
 const timerContainer = document.querySelector('.timerContainer');
@@ -351,6 +359,8 @@ timerMinimized.addEventListener('click', function() {
 
 
 
+/* Sort Profiles */
+
 const profileSort = document.querySelector('.profileSort');
 
 let sortedProfiles = [];
@@ -362,8 +372,10 @@ profileSort.addEventListener('change', function() {
     SortProfiles();
 });
 
+
 function SortProfiles() {
     const loadSortOption = localStorage.getItem('sortOption');
+
     profileSort.value = loadSortOption;
     switch (loadSortOption) {
         case 'timeAddedAsc':
@@ -394,10 +406,14 @@ function SortProfiles() {
 
 
 
+/* Manage Profiles */
+
 const profileEditBtn = document.querySelector('.profileEditBtn');
 const editProfileContainer = document.querySelector('.editProfileContainer');
 const editProfile = document.querySelector('.editProfile');
 const closeEditProfile = document.querySelector('.closeEditProfile');
+
+let indexSave = -1;   // save e.target index
 
 
 profileEditBtn.addEventListener('click', function() {
@@ -409,10 +425,88 @@ profileEditBtn.addEventListener('click', function() {
     RenderProfilesInManage();
 });
 
+
 closeEditProfile.addEventListener('click', function() {
     editProfileContainer.style.display = 'none';
     document.body.style.overflow = 'auto';
+
+    menu.innerHTML = '';
+    sortedProfiles.forEach((profile) => {
+        AddProfile(profile.name);
+    });
 });
+
+
+
+editProfile.addEventListener('click', function(e) {
+    if (e.target.classList.contains('editProfileNameBtn')) {
+
+        const inputElement = e.target.previousElementSibling;
+        const editProfileInput = document.querySelectorAll('.editProfileInput');
+        const editProfileNameBtn = document.querySelectorAll('.editProfileNameBtn');
+        
+        if (inputElement.readOnly) {
+            inputElement.readOnly = false;
+            inputElement.focus();
+            inputElement.select();
+            e.target.textContent = 'Save';
+
+            const index = sortedProfiles.findIndex((profile) => profile.name === inputElement.value);
+            indexSave = index;
+
+            for (let i = 0; i < editProfileInput.length; i++) {
+                if (!editProfileInput[i].readOnly && i !== index) {
+                    editProfileInput[i].readOnly = true;
+                    editProfileNameBtn[i].textContent = 'Edit';
+                    editProfileInput[i].value = sortedProfiles[i].name;
+                }
+            }
+        } 
+        else {
+            if (!inputElement.value) {
+                alert('Profile name cannot be empty');
+                return;
+            }
+
+            if (inputElement.value.length > 20) {
+                alert('Profile name cannot exceed 20 characters');
+                return;
+            }
+
+            const oldProfileName = sortedProfiles[indexSave].name;
+            const newProfileName = inputElement.value;
+
+            if (profiles.includes(inputElement.value) && oldProfileName !== newProfileName) {
+                alert('Profile already exists');
+                return;
+            }
+
+            const key = oldProfileName + '-flashcards';
+            const newKey = newProfileName + '-flashcards';
+            const flashcards = JSON.parse(localStorage.getItem(key)) || [];
+            if (flashcards.length !== 0) {
+                localStorage.setItem(newKey, JSON.stringify(flashcards));
+            }
+            localStorage.removeItem(key);
+
+            profiles[profiles.indexOf(oldProfileName)] = newProfileName;
+            localStorage.setItem('profiles', JSON.stringify(profiles));
+
+            profileObjs[profileObjs.indexOf(sortedProfiles[indexSave])].name = newProfileName;
+            localStorage.setItem('profileObj', JSON.stringify(profileObjs));
+
+            inputElement.readOnly = true;
+            e.target.textContent = 'Edit';
+
+            inputElement.value = newProfileName;
+
+            SortProfiles();
+        }
+    } else if (e.target.classList.contains('deleteProfileNameBtn')) {
+        confirm('Are you sure you want to delete this profile?') ? DeleteProfileInManage(e.target) : null;
+    }
+});
+
 
 function DeleteProfileInManage(btn) {
     const btnTextContent = btn.previousElementSibling.previousElementSibling.value;
@@ -426,9 +520,9 @@ function DeleteProfileInManage(btn) {
     profiles.splice(profiles.indexOf(btnTextContent), 1);
     localStorage.setItem('profiles', JSON.stringify(profiles));
 
-    SortProfiles();
-    RenderProfilesInManage();
+    editProfile.removeChild(btn.parentElement);
 }
+
 
 function RenderProfilesInManage() {
     editProfile.innerHTML = `<p class="manageProfileTitle">Manage Profiles</p>
@@ -445,75 +539,10 @@ function RenderProfilesInManage() {
     closeManageBtn.addEventListener('click', function() {
         editProfileContainer.style.display = 'none';
         document.body.style.overflow = 'auto';
-    });
 
-    const editProfileNameBtn = document.querySelectorAll('.editProfileNameBtn');
-    const deleteProfileNameBtn = document.querySelectorAll('.deleteProfileNameBtn');
-    const editProfileInput = document.querySelectorAll('.editProfileInput');
-
-    editProfileNameBtn.forEach((btn, index) => {
-        btn.addEventListener('click', function() {
-            if (editProfileInput[index].readOnly) {
-                editProfileInput[index].readOnly = false;
-                editProfileInput[index].focus();
-                editProfileInput[index].select();
-                btn.textContent = 'Save';
-
-                for (let i = 0; i < editProfileInput.length; i++) {
-                    if (!editProfileInput[i].readOnly && i !== index) {
-                        editProfileInput[i].readOnly = true;
-                        editProfileNameBtn[i].textContent = 'Edit';
-                        editProfileInput[i].value = sortedProfiles[i].name;
-                    }
-                }
-            } 
-            else {
-                if (!editProfileInput[index].value) {
-                    alert('Profile name cannot be empty');
-                    return;
-                }
-
-                if (editProfileInput[index].value.length > 20) {
-                    alert('Profile name cannot exceed 20 characters');
-                    return;
-                }
-
-                const oldProfileName = sortedProfiles[index].name;
-                const newProfileName = editProfileInput[index].value;
-
-                if (profiles.includes(editProfileInput[index].value) && oldProfileName !== newProfileName) {
-                    alert('Profile already exists');
-                    return;
-                }
-
-                const key = oldProfileName + '-flashcards';
-                const newKey = newProfileName + '-flashcards';
-                const flashcards = JSON.parse(localStorage.getItem(key)) || [];
-                if (flashcards.length !== 0) {
-                    localStorage.setItem(newKey, JSON.stringify(flashcards));
-                }
-                localStorage.removeItem(key);
-
-                profiles[profiles.indexOf(oldProfileName)] = newProfileName;
-                localStorage.setItem('profiles', JSON.stringify(profiles));
-
-                profileObjs[profileObjs.indexOf(sortedProfiles[index])].name = newProfileName;
-                localStorage.setItem('profileObj', JSON.stringify(profileObjs));
-
-                editProfileInput[index].readOnly = true;
-                btn.textContent = 'Edit';
-
-                menu.innerHTML = '';
-                sortedProfiles.forEach((profile) => {
-                    AddProfile(profile.name);
-                });
-            }
-        });
-    });
-
-    deleteProfileNameBtn.forEach((btn) => {
-        btn.addEventListener('click', function() {
-            confirm('Are you sure you want to delete this profile?') ? DeleteProfileInManage(btn) : null;
+        menu.innerHTML = '';
+        sortedProfiles.forEach((profile) => {
+            AddProfile(profile.name);
         });
     });
 }
