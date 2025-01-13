@@ -507,6 +507,12 @@ editProfile.addEventListener('click', function(e) {
                 return;
             }
 
+            if (newProfileName === oldProfileName) {
+                inputElement.readOnly = true;
+                e.target.textContent = 'Edit';
+                return;
+            }
+
             const key = oldProfileName + '-flashcards';
             const newKey = newProfileName + '-flashcards';
             const flashcards = JSON.parse(localStorage.getItem(key)) || [];
