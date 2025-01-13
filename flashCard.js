@@ -56,6 +56,17 @@ menu.addEventListener('click', function(e) {
 
 
 addProfileBtn.addEventListener('click', function() {
+    AddProfileBtn();
+});
+
+addProfileInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        AddProfileBtn();
+    }
+});
+
+
+function AddProfileBtn() {
     const profileName = addProfileInput.value;
     if (!profileName) return;
 
@@ -83,7 +94,7 @@ addProfileBtn.addEventListener('click', function() {
     localStorage.setItem('profileObj', JSON.stringify(profileObjs));
 
     SortProfiles();
-});
+}
 
 
 function AddProfile(profileName) {
@@ -144,6 +155,21 @@ cardContainer.addEventListener('click', function(e) {
         localStorage.setItem(key, JSON.stringify(flashcards));
         
         cardContainer.removeChild(e.target.parentElement);
+    }
+});
+
+
+addCardQuestion.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        addCardQuestion.value += '    ';
+    }
+});
+
+addCardAnswer.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        addCardAnswer.value += '    ';
     }
 });
  
