@@ -480,11 +480,15 @@ editProfile.addEventListener('click', function(e) {
             const index = sortedProfiles.findIndex((profile) => profile.name === inputElement.value);
             indexSave = index;
 
+            
+
             for (let i = 0; i < editProfileInput.length; i++) {
-                if (!editProfileInput[i].readOnly && i !== index) {
-                    editProfileInput[i].readOnly = true;
+                const editProfileInputElement = editProfileInput[i];
+
+                if (!editProfileInputElement.readOnly && i !== index) {
+                    editProfileInputElement.readOnly = true;
                     editProfileNameBtn[i].textContent = 'Edit';
-                    editProfileInput[i].value = sortedProfiles[i].name;
+                    editProfileInputElement.value = sortedProfiles[i].name;
                 }
             }
         } 
@@ -535,12 +539,27 @@ editProfile.addEventListener('click', function(e) {
             SortProfiles();
         }
     } else if (e.target.classList.contains('deleteProfileNameBtn')) {
+
+        const editProfileInput = document.querySelectorAll('.editProfileInput');
+        const editProfileNameBtn = document.querySelectorAll('.editProfileNameBtn');
+
+        for (let i = 0; i < editProfileInput.length; i++) {
+            const editProfileInputElement = editProfileInput[i];
+
+            if (!editProfileInputElement.readOnly) {
+                editProfileInputElement.readOnly = true;
+                editProfileNameBtn[i].textContent = 'Edit';
+                editProfileInputElement.value = sortedProfiles[i].name;
+            }
+        }
+
         confirm('Are you sure you want to delete this profile?') ? DeleteProfileInManage(e.target) : null;
     }
 });
 
 
 function DeleteProfileInManage(btn) {
+
     const btnTextContent = btn.previousElementSibling.previousElementSibling.value;
     const deleteKey = btnTextContent + '-flashcards';
     localStorage.removeItem(deleteKey);
