@@ -390,7 +390,6 @@ timerMinimized.addEventListener('click', function() {
 const profileSort = document.querySelector('.profileSort');
 
 let sortedProfiles = [];
-localStorage.setItem('sortOption', 'timeAddedAsc');
 
 SortProfiles();
 
@@ -401,7 +400,7 @@ profileSort.addEventListener('change', function() {
 
 
 function SortProfiles() {
-    const loadSortOption = localStorage.getItem('sortOption');
+    const loadSortOption = localStorage.getItem('sortOption') || 'timeAddedAsc';
 
     profileSort.value = loadSortOption;
     switch (loadSortOption) {
