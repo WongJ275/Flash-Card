@@ -92,6 +92,9 @@ body {
     border-radius: 10px;
     margin: 0 auto;
     cursor: pointer;
+    overflow-y: auto;
+    scroll-behavior: auto;
+    scrollbar-width: thin;
 }
 
 .front h2, .back h2 {
@@ -106,6 +109,10 @@ body {
     display: flex;
     text-align: center;
     margin: 20px auto 30px auto;
+}
+
+.readQ, .readA {
+    padding-bottom: 20px;
 }
 
 .questionCard, .answerCard {

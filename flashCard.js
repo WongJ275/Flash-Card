@@ -3,12 +3,20 @@ const cardFront = document.querySelector('.front');
 const cardBack = document.querySelector('.back');
 
 cardFront.addEventListener('click', function() {
+
+    
+
     cardBack.style.display = 'block';
+    cardBack.scrollTop = 0;
     cardFront.style.display = 'none';
 });
 
 cardBack.addEventListener('click', function() {
+
+    
+
     cardFront.style.display = 'block';
+    cardFront.scrollTop = 0;
     cardBack.style.display = 'none';
 });
 
@@ -242,8 +250,10 @@ playBtn.addEventListener('click', function() {
     readCard.style.display = 'block';
     showCard.style.display = 'none';
 
-    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
-    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
+    questionCard.innerHTML = `<p class="questionCard readQ">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
+    answerCard.innerHTML = `<p class="answerCard readA">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
+    
+    cardFront.style.scrollTop = 0;
 
     cardFront.style.display = 'block';
     cardBack.style.display = 'none';
@@ -254,8 +264,9 @@ playBtn.addEventListener('click', function() {
 
 nextBtn.addEventListener('click', function() {
     cardIndex = (cardIndex + 1) % flashcards.length;
-    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
-    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
+    questionCard.innerHTML = `<p class="questionCard readQ">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
+    answerCard.innerHTML = `<p class="answerCard readA">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
+    cardFront.style.scrollTop = 0;
     cardFront.style.display = 'block';
     cardBack.style.display = 'none';
     readCardIndex.textContent = cardIndex + 1;
@@ -263,8 +274,9 @@ nextBtn.addEventListener('click', function() {
 
 prevBtn.addEventListener('click', function() {
     cardIndex = (cardIndex - 1 + flashcards.length) % flashcards.length;
-    questionCard.innerHTML = `<p class="questionCard">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
-    answerCard.innerHTML = `<p class="answerCard">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
+    questionCard.innerHTML = `<p class="questionCard readQ">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
+    answerCard.innerHTML = `<p class="answerCard readA">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
+    cardFront.style.scrollTop = 0;
     cardFront.style.display = 'block';
     cardBack.style.display = 'none';
     readCardIndex.textContent = cardIndex + 1;
