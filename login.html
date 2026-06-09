@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>flashcard</title>
+        <link rel="stylesheet" href="login.css" />
+    </head>
+    <body>
+        <header class="titleContainer">
+            <h1 class="title">Sign In</h1>
+        </header>
+        
+        <main>
+            <div class="authDiv hidden">
+                <div class="loginDiv">
+                    <form id="loginForm" class="loginForm">
+                        <div>
+                            <label for="loginEmail">Email address</label>
+                            <input 
+                                type="email" 
+                                id="loginEmail" 
+                                name="email" 
+                                autocomplete="username"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="loginPassword">Password</label>
+                            <input 
+                                type="password" 
+                                id="loginPassword" 
+                                name="password" 
+                                autocomplete="current-password"
+                                required
+                            >
+                        </div>
+                        <p class="errorMsgSignIn"></p>
+                        <button type="submit" class="signInBtn">Sign In</button>
+                    </form>
+
+                    <p class="switchToSignUpText">
+                        Don't have an account? 
+                        <span class="switchToSignUp">Sign Up</span>
+                    </p>
+                </div>
+                
+                <div class="signUpDiv hidden">
+                    <form id="signUpForm" class="signUpForm">
+                        <div>
+                            <label for="signUpEmail">Email address</label>
+                            <input 
+                                type="email" 
+                                id="signUpEmail" 
+                                name="email" 
+                                autocomplete="username"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="signUpPassword">Password</label>
+                            <input 
+                                type="password" 
+                                id="signUpPassword" 
+                                name="password" 
+                                autocomplete="new-password"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="confirmPassword">Confirm password</label>
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="password" 
+                                autocomplete="new-password"
+                                required
+                            >
+                        </div>
+                        <label class="inheritDataLabel" for="inheritData">
+                            <input 
+                                class="inheritData"
+                                type="checkbox" 
+                                id="inheritData" 
+                                name="inheritData"
+                            >
+                            Inherit flashcards from localStorage
+                        </label>
+                        
+                        <p class="errorMsgSignUp"></p>
+                        <button type="submit" class="signUpBtn">Sign Up</button>
+                    </form>
+
+                    <p class="switchToSignInText">
+                        Already have an account?
+                        <span class="switchToSignIn">Sign In</span>
+                    </p>
+                </div>
+
+                <hr />
+                <button class="withoutAccount">Continue as Guest</button>
+                <p class="note">Note: localStorage is used in guest mode</p>
+            </div>
+            
+            <div class="profileDiv hidden">
+                <p class="userEmail"></p>
+                <button class="signOutBtn">Sign Out</button>
+                <button class="viewCardsBtn">View Cards</button>
+            </div>
+        </main>
+
+        <div class="loadingScreen hidden">
+            <div class="loader"></div>
+        </div>
+        
+        <script type="module" src="login.js"></script>
+    </body>
+</html>

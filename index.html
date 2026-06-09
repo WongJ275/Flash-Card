@@ -3,29 +3,30 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>flash card</title>
-        <link rel="stylesheet" href="styles.css" />
+        <title>flashcard</title>
+        <link rel="stylesheet" href="flashcard.css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
     </head>
     <body>
 
         <!--Title (with back to menu button)-->
-        <div class="titleContainer">
+        <header class="titleContainer">
             <h1 class="title">Flash Card</h1>
-            <div class="menuBtnContainer hide"><i class="fa-solid fa-house menuBtn"></i></div> 
-        </div>
+            <i class="fa-solid fa-house menuBtn hidden"></i>
+            <i class="fa-regular fa-circle-user loginBtn"></i>
+        </header>
         
-        <!--Input for adding profiles-->
-        <div class="wrapper">
-            <input type="text" id="addProfile" class="addProfileInput" placeholder="Enter Profile Name" />
-            <button id="addProfileBtn" class="addProfileBtn">
+        <!--Input for adding decks-->
+        <div class="addDeckWrapper">
+            <input type="text" id="addDeck" class="addDeckInput" placeholder="Enter Deck Name" />
+            <button id="addDeckBtn" class="addDeckBtn">
                 <i class="fa-solid fa-arrow-right"></i>
             </button>  
         </div>
 
-        <!--Sorting and Editing for profiles-->
-        <div class="profileOptionContainer">
-            <select id="profileSort" class="profileSort">
+        <!--Sorting and Editing for decks-->
+        <div class="deckOptionContainer">
+            <select id="deckSort" class="deckSort">
                 <option value="timeAddedAsc">Time Added Asc</option>
                 <option value="timeAddedDesc">Time Added Desc</option>
                 <option value="nameAsc">Name Asc</option>
@@ -34,22 +35,22 @@
                 <option value="lastAccessedDesc">Last Accessed Desc</option>
             </select>
 
-            <i class="fa-solid fa-pen-to-square profileEditBtn"></i>
+            <i class="fa-solid fa-pen-to-square deckEditBtn"></i>
         </div>
 
-        <!--Managing profiles-->
-        <div class="editProfileContainer">
-            <div class="editProfile">
+        <!--Managing decks-->
+        <div class="editDeckContainer hidden">
+            <div class="editDeck">
                 
             </div>
-            <div class="closeEditProfile"></div>
+            <div class="closeEditDeck"></div>
         </div>
         
-        <!--Show all profiles-->
+        <!--Show all decks-->
         <div class="menu"></div>
 
-        <!--Show all cards of selected profile-->
-        <div class="showCard hide">
+        <!--Show all cards of selected deck-->
+        <div class="showCard hidden">
             <div class="addCard">
                 <h2 class="showCardTitle"></h2>
                 <div class="addCardContainer">
@@ -62,20 +63,20 @@
             <div class="cardContainer"></div>
         </div>
 
-        <!--Read cards of selected profile-->
-        <div class="readCard hide">
+        <!--Read cards of selected deck-->
+        <div class="readCard hidden">
             <div class="readCardContainer">
                 
                 <div class="front">
                     <h2>Question</h2>
                     <div class="content questionCardContainer">
-
+                        <p class="questionCard readQ"></p>
                     </div>
                 </div>
-                <div class="back hide">
+                <div class="back hidden">
                     <h2>Answer</h2>
                     <div class="content answerCardContainer">
-
+                        <p class="answerCard readA"></p>
                     </div>
                 </div>
                 <div class="buttons">
@@ -107,7 +108,7 @@
                     </div>
                 </div>
 
-                <div class="timerMinimized hide">
+                <div class="timerMinimized hidden">
                     <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
                 </div>
             </div>
@@ -118,7 +119,10 @@
             <i class="fa-solid fa-arrow-up"></i>
         </a>
 
+        <div class="loadingScreen">
+            <div class="loader"></div>
+        </div>
         
-        <script src="flashCard.js"></script>
+        <script type="module" src="flashcard.js"></script>
     </body>
 </html>

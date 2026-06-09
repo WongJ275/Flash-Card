@@ -1,0 +1,208 @@
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+img, picture, svg, video {
+    display: block;
+    max-width: 100%;
+}
+
+body {
+    background-color: #000000;
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.titleContainer {
+    width: 950px;
+    margin: 0 auto;
+    position: relative;
+}
+
+main {
+    margin: 0px auto;
+    max-width: 350px;
+}
+
+form {
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+}
+
+label, input:not([type="checkbox"]) {
+    display: block;
+    width: 100%;
+}
+
+input:not([type="checkbox"]) {
+    background-color: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    height: 40px;
+    margin-bottom: 20px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+input:autofill,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #000000 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
+}
+
+label {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.errorMsgSignIn, .errorMsgSignUp {
+    color: rgb(255, 138, 138);
+    
+}
+
+.inheritData {
+    cursor: pointer;
+    margin: -2px 5px 0px 0px;
+    vertical-align: middle;
+}
+
+.inheritDataLabel {
+    vertical-align: middle;
+    margin-bottom: 30px;
+}
+
+.signInBtn, .signUpBtn {
+    height: 35px;
+    color: white;
+    background-color: green;
+    border: 1px solid rgb(0, 150, 0);
+    border-radius: 5px;
+    font-size: 15px;
+    margin: 25px 0px 50px 0px;
+}
+
+.withoutAccount {
+    height: 35px;
+    color: white;
+    background-color: rgb(1, 122, 102);
+    border: 1px solid rgb(2, 134, 112);
+    border-radius: 5px;
+    font-size: 15px;
+    margin: 20px auto 0px auto;
+    width: 100%;
+}
+
+.signInBtn:hover, .signUpBtn:hover, .withoutAccount:hover {
+    cursor: pointer;
+}
+
+.switchToSignUpText, .switchToSignInText {
+    color: rgb(209, 208, 208);
+    margin-bottom: 20px;
+}
+
+.switchToSignUp, .switchToSignIn {
+    margin-left: 5px;
+    color: white;
+}
+
+.switchToSignUp:hover, .switchToSignIn:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+hr {
+    margin: 10px auto;
+}
+
+.note {
+    margin-top: 10px;
+    font-size: 14px;
+    color: rgb(167, 167, 167);
+}
+
+.userEmail {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 50px;
+}
+
+.signOutBtn, .viewCardsBtn {
+    display: block;
+    height: 35px;
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 7px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.signOutBtn {
+    background-color: rgb(255, 94, 120);
+    border-color: rgb(255, 131, 151);
+}
+
+.viewCardsBtn {
+    background-color: rgb(92, 92, 255);
+    border-color: rgb(131, 131, 255);
+}
+
+@media (max-width: 1000px) {
+    .titleContainer {
+        width: 95%;
+    }
+}
+
+.loadingScreen {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.253);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: wait;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #858585; 
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
