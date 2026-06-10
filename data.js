@@ -321,14 +321,9 @@ export async function InheritLocalStorageData() {
 
         const decksRaw = localStorage.getItem(DECK_LSKEY);
         
-        // Processed by another tab or empty deck
-        if (!decksRaw || decksRaw === "[]") {
-            console.log("Migration skipped: Empty localStorage or Already processed by another tab.");
-
-            if (decksRaw === "[]") {
-                localStorage.removeItem(DECK_LSKEY);
-            }
-            await supabase.auth.updateUser({ data: { shouldInherit: false } });
+        // Processed by another tab
+        if (!decksRaw) {
+            console.log("Migration skipped: Already processed by another tab.");
             return;
         }
 

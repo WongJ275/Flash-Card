@@ -107,7 +107,8 @@ signUpForm.addEventListener('submit', async function(e) {
 
     let inheritData = document.getElementById('inheritData').checked;
 
-    if (!localStorage.getItem("decks")) {
+    const decksRaw = localStorage.getItem("decks");
+    if (!decksRaw || decksRaw === "[]") {
         inheritData = false;
     }
 
