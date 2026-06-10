@@ -318,7 +318,7 @@ export async function InheritLocalStorageData(userID) {
         const decksRaw = localStorage.getItem(DECK_LSKEY);
         
         // Processed by another tab or empty deck
-        if (!decksRaw) {
+        if (!decksRaw || decksRaw === "[]" || decksRaw === "") {
             console.log("Migration skipped: Empty localStorage or Already processed by another tab.");
             return;
         }
