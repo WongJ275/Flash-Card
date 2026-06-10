@@ -3,6 +3,8 @@ A simple flashcard webpage designed for effective revision through active recall
 
 The platform supports both local and cloud-based storage. Users can get started instantly in Guest mode, which utilize localStorage for storing data. Upon signing up, users have the option to seamlessly migrate their local decks and cards to the database.
 
+[Visit Platform](https://wongj275.github.io/Flash-Card/)
+
 ## Features
 - User authentication and data storage using Supabase
 - Data migration upon sign up
