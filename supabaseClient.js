@@ -51,8 +51,7 @@ export async function SignUp(email, password, shouldInherit) {
         email: email, 
         password: password,
         options: {
-            // TODO: replace
-            emailRedirectTo: 'http://127.0.0.1:5500/Flash-Card/login.html',
+            emailRedirectTo: 'https://wongj275.github.io/Flash-Card/login.html',
             data: {
                 shouldInherit: shouldInherit
             }
