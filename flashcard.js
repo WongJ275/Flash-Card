@@ -16,6 +16,7 @@ supabase.auth.onAuthStateChange((event, session) => {
         const metadata = session.user.user_metadata;
         const shouldInherit = metadata ? metadata.shouldInherit : false;
 
+        // handled by login.html
         if (shouldInherit === true) {
             window.location.href = "login.html";
             return;
@@ -58,7 +59,6 @@ let cardIndex = 0;  // current index
 let decks = [];
 
 async function init() {
-    console.log("init called");
     try {
         decks = await LoadDecks();
         SortDecks();
@@ -180,13 +180,6 @@ function RenderCards() {
             cardDiv.dataset.id = flashcard.id;
         }
 
-        /*cardDiv.innerHTML = `
-            <div class="questionCard"><p>${FormatTextRender(flashcard.question)}</p></div>
-            <hr/>
-            <div class="answerCard"><p>${FormatTextRender(flashcard.answer)}</p></div>
-            <i class="fa-regular fa-square-minus deleteBtn"></i>
-        `;*/
-
         const questionDiv = document.createElement('div');
         questionDiv.className = 'questionCard';
         const questionP = document.createElement('p');
@@ -251,9 +244,6 @@ addCardAnswer.addEventListener('keydown', function(e) {
 });
  
 addCardBtn.addEventListener('click', async function() {
-    //const question = FormatTextSave(addCardQuestion.value);
-    //const answer = FormatTextSave(addCardAnswer.value);
-
     const question = addCardQuestion.value;
     const answer = addCardAnswer.value;
     
@@ -277,13 +267,6 @@ addCardBtn.addEventListener('click', async function() {
     if (newCard.id) {
         cardDiv.dataset.id = newCard.id;
     }
-
-    /*cardDiv.innerHTML = `
-        <div class="questionCard"><p>${FormatTextRender(question)}</p></div>
-        <hr/>
-        <div class="answerCard"><p>${FormatTextRender(answer)}</p></div>
-        <i class="fa-regular fa-square-minus deleteBtn"></i>
-    `;*/
 
     const questionDiv = document.createElement('div');
     questionDiv.className = 'questionCard';
@@ -373,9 +356,6 @@ playBtn.addEventListener('click', function() {
     questionCardContent.textContent = flashcards[cardIndex].question;
     answerCardContent.textContent = flashcards[cardIndex].answer;
 
-    //questionCard.innerHTML = `<p class="questionCard readQ">${FormatTextRender(flashcards[cardIndex].question)}</p>`;
-    //answerCard.innerHTML = `<p class="answerCard readA">${FormatTextRender(flashcards[cardIndex].answer)}</p>`;
-    
     cardFront.style.scrollTop = 0;
 
     cardFront.classList.remove("hidden");

@@ -72,7 +72,6 @@ export function CleanLocalStorageData() {
             answer: ReverseFormatText(card.answer)
         }));
 
-        console.log(cleanedCards);
         localStorage.setItem(cardKey, JSON.stringify(cleanedCards));
     })
 }
@@ -99,13 +98,11 @@ export function FormatTextRender(text) {
 }
 
 export function ShowLoadingScreen() {
-    console.log("show loading screen");
     const loadingScreen = document.querySelector(".loadingScreen");
     loadingScreen.classList.remove("hidden");
 }
 
 export function HideLoadingScreen() {
-    console.log("hide loading screen");
     const loadingScreen = document.querySelector(".loadingScreen");
     loadingScreen.classList.add("hidden");
 }

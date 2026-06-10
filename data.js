@@ -103,7 +103,7 @@ export async function UpdateDeckLastAccessed(deckID_or_name, decks) {
         const user = await CheckUser();
 
         if (user) {
-            const findDeck = decks_c.find((deck) => deck.id === deckID_or_name);
+            const findDeck = decks_c.find((deck) => String(deck.id) === deckID_or_name);
 
             const now = new Date().toISOString();
             findDeck ? findDeck.lastAccessed = now : null;
@@ -119,7 +119,7 @@ export async function UpdateDeckLastAccessed(deckID_or_name, decks) {
         else {
             const findDeck = decks_c.find((deck) => deck.name === deckID_or_name);
 
-            findDeck ? findDeck.lastAccessed = Date.now() : null;
+            findDeck ? findDeck.lastAccessed = new Date().toISOString() : null;
             localStorage.setItem(DECK_LSKEY, JSON.stringify(decks_c));
         }
 
@@ -156,8 +156,8 @@ export async function AddDeckData(deckName, decks) {
         else {
             let newDeck = {
                 name: deckName,
-                timeAdded: Date.now(),
-                lastAccessed: Date.now()
+                timeAdded: new Date().toISOString(),
+                lastAccessed: new Date().toISOString()
             }
             decks_c.push(newDeck);
 
@@ -319,7 +319,7 @@ export async function InheritLocalStorageData(userID) {
         
         // Processed by another tab or empty deck
         if (!decksRaw) {
-            console.log("Migration skipped: Already processed by another tab.");
+            console.log("Migration skipped: Empty localStorage or Already processed by another tab.");
             return;
         }
 
@@ -334,7 +334,7 @@ export async function InheritLocalStorageData(userID) {
 
             if (deckError) throw deckError;
 
-            console.log("decks inserted");
+            //console.log("decks inserted");
 
             for (const deck of upsertedDecks) {
                 const cardKey = deck.name + CARDS_SUFFIX_LSKEY;
@@ -363,7 +363,7 @@ export async function InheritLocalStorageData(userID) {
                     if (cardError) throw cardError;
 
                     localStorage.removeItem(cardKey);
-                    console.log("cards inserted");
+                    //console.log("cards inserted");
                 }
             }
 

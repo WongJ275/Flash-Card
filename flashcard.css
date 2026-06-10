@@ -342,6 +342,7 @@ textarea::-webkit-resizer {
     height: auto;
     margin: 20px auto 100px auto;
     color: white;
+    overflow: auto;
 }
 
 .indexContainer {

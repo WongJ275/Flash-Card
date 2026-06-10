@@ -11,7 +11,7 @@ supabase.auth.onAuthStateChange((event, session) => {
             const metadata = session.user.user_metadata;
             const shouldInherit = metadata ? metadata.shouldInherit : false;
 
-            console.log("Inherit data:", shouldInherit);
+            //console.log("Inherit data:", shouldInherit);
 
             if (shouldInherit === true) {
                 try {

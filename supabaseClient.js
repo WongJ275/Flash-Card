@@ -83,8 +83,6 @@ export async function SignIn(email, password) {
     }
 
     return data.user;
-
-    //window.location.href = 'index.html';
 }
 
 export async function SignOut() {
