@@ -313,25 +313,29 @@ function DeleteFromLocalStorage(key) {
     }
 }
 
-export async function InheritLocalStorageData(userID) {
+// For migrating data from localStorage to database
+export async function InheritLocalStorageData() {
     await navigator.locks.request('lock', async (lock) => {
+        const user = await CheckUser();
+        if (!user) return;
+
         const decksRaw = localStorage.getItem(DECK_LSKEY);
         
         // Processed by another tab or empty deck
-        if (!decksRaw) {
+        if (!decksRaw || decksRaw === "[]") {
             console.log("Migration skipped: Empty localStorage or Already processed by another tab.");
-            return;
-        }
-        else if (decksRaw === "[]" || decksRaw === "") {
-            console.log("Migration skipped: Empty localStorage.");
-            localStorage.removeItem(DECK_LSKEY);
+
+            if (decksRaw === "[]") {
+                localStorage.removeItem(DECK_LSKEY);
+            }
+            await supabase.auth.updateUser({ data: { shouldInherit: false } });
             return;
         }
 
         const decks = JSON.parse(decksRaw);
 
         try {
-            const deckPayload = decks.map(d => ({ name: d.name, user_id: userID })); 
+            const deckPayload = decks.map(d => ({ name: d.name, user_id: user.id })); 
             const { data: upsertedDecks, error: deckError } = await supabase
                 .from('decks')
                 .upsert(deckPayload, { onConflict: 'user_id, name' })
@@ -351,7 +355,7 @@ export async function InheritLocalStorageData(userID) {
                         question: c.question,
                         answer: c.answer,
                         deck_id: deck.id,
-                        user_id: userID
+                        user_id: user.id
                     }));
 
                     // Delete duplicates due to possible partial import
@@ -359,7 +363,7 @@ export async function InheritLocalStorageData(userID) {
                         .from('cards')
                         .delete()
                         .eq('deck_id', deck.id)
-                        .eq('user_id', userID);
+                        .eq('user_id', user.id);
 
                     const { error: cardError } = await supabase
                         .from('cards')

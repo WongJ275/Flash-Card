@@ -16,7 +16,7 @@ supabase.auth.onAuthStateChange((event, session) => {
             if (shouldInherit === true) {
                 try {
                     ShowLoadingScreen();
-                    await InheritLocalStorageData(session.user.id);
+                    await InheritLocalStorageData();
                 } catch (error) {
                     console.error("Data inherit failed:", error);
                 } finally {
