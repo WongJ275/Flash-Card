@@ -5,7 +5,7 @@ import {
 } from "./data.js";
 
 import { supabase, CheckSession } from "./supabaseClient.js";
-import { ShowLoadingScreen, HideLoadingScreen } from "./utils.js";
+import { ShowLoadingScreen, HideLoadingScreen, ScrollToTopInstant } from "./utils.js";
 
 supabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_OUT") {
@@ -88,6 +88,7 @@ menu.addEventListener('click', async function(e) {
         showCardTitle.textContent = e.target.textContent;
 
         ShowLoadingScreen();
+        ScrollToTopInstant();
         flashcards = await LoadCards(deckID_or_name);
         RenderCards();
         HideLoadingScreen();
@@ -323,6 +324,8 @@ function BackToMenu() {
     menuBtn.classList.add("hidden");
     readCard.classList.add("hidden");
 
+    ScrollToTopInstant();
+
     cardContainer.innerHTML = '';
 
     const loadSortOption = LoadStringLocalStorage('sortOption');
@@ -348,6 +351,8 @@ playBtn.addEventListener('click', function() {
         alert('No flashcards to read');
         return;
     }
+
+    ScrollToTopInstant();
 
     cardIndex = 0;
     readCard.classList.remove("hidden");
@@ -685,7 +690,15 @@ function RenderDecksInManage() {
     });
 }
 
-const loginBtn = document.querySelector('.loginBtn');
-loginBtn.addEventListener('click', function() {
+document.querySelector('.scrollToTop').addEventListener('click', function(e) {
+    e.preventDefault(); 
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' 
+    });
+});
+
+document.querySelector('.loginBtn').addEventListener('click', function() {
     window.location.href = 'login.html';
 })

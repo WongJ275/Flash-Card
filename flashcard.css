@@ -7,10 +7,6 @@
     margin: 0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     min-height: 100vh;
 }
